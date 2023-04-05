@@ -1,91 +1,37 @@
-import Image from 'next/image'
-import { Inter } from 'next/font/google'
-import styles from './page.module.css'
+import Image from "next/image";
+import {contentfulEntries, contentfulEntry} from "@/app/(contentful)/fetch";
+import {ContentfulDocumentRenderer} from "@/app/(contentful)/renderer";
 
-const inter = Inter({ subsets: ['latin'] })
 
-export default function Home() {
-  return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
+export default async function Home() {
+
+  const entry = await contentfulEntry('6XdxqW4vh930hK4G3MOyRA');
+
+  return <main className="">
+    <div className="flex relative">
+      <img src="/corner.svg" className="h-10 mt-8"/>
+      <div className="absolute flex absolute top-16 mt-2 gap-2 h-full">
+        <div className="w-2 bg-black"></div>
+        <div className="left-4 w-2 bg-[#f00]"></div>
+        <div className="left-8 w-2 bg-black"></div>
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-        <div className={styles.thirteen}>
-          <Image src="/thirteen.svg" alt="13" width={40} height={31} priority />
-        </div>
+      <div className="flex justify-center relative grow">
+        <div className="absolute top-8 w-full h-2 bg-black"></div>
+        <div className="absolute top-12 w-full h-2 bg-[#f00]"></div>
+        <div className="absolute top-16 w-full h-2 bg-black"></div>
+        <Image src="/hero.png" alt="Gate2Admira Logo" width={1264/5} height={543/5} className="relative"/>
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://beta.nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>Explore the Next.js 13 playground.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={inter.className}>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p className={inter.className}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
+    </div>
+    <div className="flex">
+      <div className="flex gap-2">
+        <div className="w-2 bg-black"></div>
+        <div className="left-4 w-2 bg-[#f00]"></div>
+        <div className="left-8 w-2 bg-black"></div>
       </div>
-    </main>
-  )
+      <div className="p-8 max-w-2xl mx-auto">
+        <ContentfulDocumentRenderer document={entry.fields.content}/>
+      </div>
+    </div>
+
+  </main>
 }

@@ -1,9 +1,11 @@
 import {
     ContentfulDocument,
-    ContentfulDocumentHeading,
+    ContentfulDocumentAssetEmbedding,
+    ContentfulDocumentHeading, ContentfulDocumentListItem,
     ContentfulDocumentNode,
     ContentfulDocumentText
 } from "@/app/(contentful)/types";
+import Image from "next/image";
 
 export function ContentfulDocumentRenderer(props: { document: ContentfulDocument }): JSX.Element {
 
@@ -17,11 +19,29 @@ export function ContentfulDocumentRenderer(props: { document: ContentfulDocument
                     case "heading-2":
                     case "heading-3":
                         return renderHeading(node)
+                    case "embedded-asset-block":
+                        return renderEmbeddedAsset(node)
+                    case "list-item":
+                        return renderListItem(node)
                     default:
                         return renderParagraph(node)
                 }
             })}
         </div>
+    }
+
+    function renderEmbeddedAsset(item: ContentfulDocumentAssetEmbedding): JSX.Element {
+        if(!('enriched' in item) || item.enriched === undefined) return <></>;
+        const originalSize = item.enriched.fields.file.details.image
+        return <div className="relative -mx-12 overflow-hidden border border-black" style={{aspectRatio: originalSize.width/originalSize.height}}>
+            <Image src={("https:" + item.enriched.fields.file.url) ?? ""} alt={item.enriched.fields.title ?? ""} fill={true}/>
+        </div>
+    }
+
+    function renderListItem(item: ContentfulDocumentListItem): JSX.Element {
+        return <div className="flex"><div className="mt-3.5 mr-2">-</div>
+          {renderParagraph(item)}
+        </div>;
     }
 
     function renderHeading(item: ContentfulDocumentHeading): JSX.Element {
@@ -35,7 +55,11 @@ export function ContentfulDocumentRenderer(props: { document: ContentfulDocument
     }
 
     function renderText(item: ContentfulDocumentText): JSX.Element {
-        return <span className={item.marks.map(mark => ({bold: "font-bold"}[mark.type])).join(" ")}>
+        return <span className={item.marks.map(mark => ({
+            bold: "font-bold",
+            italic: "italic",
+            underline: "underline",
+        }[mark.type])).join(" ")}>
           {item.value}
         </span>;
     }

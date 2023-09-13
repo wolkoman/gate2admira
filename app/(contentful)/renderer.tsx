@@ -33,7 +33,7 @@ export function ContentfulDocumentRenderer(props: { document: ContentfulDocument
     function renderEmbeddedAsset(item: ContentfulDocumentAssetEmbedding): JSX.Element {
         if(!('enriched' in item) || item.enriched === undefined) return <></>;
         const originalSize = item.enriched.fields.file.details.image
-        return <div className="relative -mx-12 overflow-hidden border border-black" style={{aspectRatio: originalSize.width/originalSize.height}}>
+        return <div className="relative lg:-mx-12 overflow-hidden border border-black" style={{aspectRatio: originalSize.width/originalSize.height}}>
             <Image src={("https:" + item.enriched.fields.file.url) ?? ""} alt={item.enriched.fields.title ?? ""} fill={true}/>
         </div>
     }

@@ -1,10 +1,14 @@
 "use client"
 
-import {ContentfulEntries} from "@/app/(contentful)/types";
+import {ContentfulEntries, ContentfulEntry} from "@/app/(contentful)/types";
 import Link from "next/link";
-import React, {useEffect, useState} from "react";
-import {createSlug} from "@/app/layout";
-import {useRouter} from "next/navigation";
+import React from "react";
+
+export function createSlug(value: ContentfulEntry) {
+  return "/" + value.sys.id + "/" + value.fields.title.toLowerCase()
+    .replaceAll(" ", "-")
+    .replaceAll(/[()\[\]{}!?.="§$%&\/]]/g, "")
+}
 
 export function Navigation(props: {
   entries: ContentfulEntries,
